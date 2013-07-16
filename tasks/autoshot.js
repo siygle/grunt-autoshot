@@ -9,17 +9,18 @@
 'use strict';
 
 module.exports = function(grunt) {
-  var phantom = require('phantom');
+  var phantom = require('node-phantom-simple');
   var st = require('st');
   var http = require('http');
-  //var util = require('util');
+  var async = require('async');
 
   grunt.registerMultiTask('autoshot', 'Create a quick screenshot for your site which could help for document or testing.', function() {
     var done = this.async();
     var options = this.options({
       path: __dirname + '/screenshot',
       type: 'jpg',
-      name: 'screenshot'
+      name: 'screenshot',
+      viewport: ['1920x1080']
     });
 
     var screenshot = function(opts, cb) {
@@ -29,8 +30,8 @@ module.exports = function(grunt) {
       var type = opts.type;
       var path = opts.path;
 
-      phantom.create(function(ph) {
-        ph.createPage(function(page) {
+      phantom.create(function(err, ph) {
+        ph.createPage(function(err, page) {
           if (viewport) {
             var sets = viewport.match(/(\d+)x(\d+)/g);
             if (sets[1] && sets[2]) {
@@ -41,7 +42,7 @@ module.exports = function(grunt) {
             }
           }
           page.zoomFactor = 1;
-          page.open(url, function() {
+          page.open(url, function(err, status) {
             var dest = filename + '.' + type;
 
             // Background problem under self-host server
@@ -54,8 +55,8 @@ module.exports = function(grunt) {
             });
 
             page.render(path + '/' + dest, function() {
-              page.close();
               ph.exit();
+              grunt.log.writeln('here');
               cb();
             });
           });
@@ -64,14 +65,23 @@ module.exports = function(grunt) {
     };
 
     if (options.remote) {
-      screenshot({
-        path: options.path,
-        filename: options.filename,
-        type: options.type,
-        url: options.remote
-      }, function() {
-        done();
-      });
+      if (options.viewport) {
+        async.eachSeries(options.viewport, function(item, cb) {
+          grunt.log.writeln(item);
+          screenshot({
+            path: options.path,
+            filename: options.filename + '-' + item,
+            type: options.type,
+            url: options.remote,
+            viewport: item
+          }, function() {
+            grunt.log.writeln('end!');
+            cb();
+          });
+        }, function() {
+          done();
+        });
+      }
     } else if (options.local) {
       http.createServer(
         st({
@@ -79,11 +89,16 @@ module.exports = function(grunt) {
           index: 'index.html'
         })
       ).listen(options.local.port, function() {
-        screenshot({
-          path: options.path,
-          filename: options.filename,
-          type: options.type,
-          url: 'http://localhost:' + options.local.port
+        async.eachSeries(options.viewport, function(item, cb) {
+          screenshot({
+            path: options.path,
+            filename: options.filename + '-' + item,
+            type: options.type,
+            url: 'http://localhost:' + options.local.port,
+            viewport: item
+          }, function() {
+            cb();
+          });
         }, function() {
           done();
         });

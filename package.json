@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "st": "~0.2.1",
-    "phantom": "~0.5.1"
+    "async": "~0.2.9",
+    "node-phantom-simple": "~1.0.10"
   }
 }

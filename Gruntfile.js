@@ -35,12 +35,12 @@ module.exports = function(grunt) {
           path: './test',
           filename: 'screenshot',
           type: 'jpg',
-          //remote: 'http://www.google.com',
-          local: {
-            path: './test/src',
-            port: 7788
-          },
-          viewpoint: [
+          remote: 'http://www.google.com',
+          //local: {
+          //  path: './test/src',
+          //  port: 7788
+          //},
+          viewport: [
             '1024x768',
             '640x960'
           ]
