@@ -33,15 +33,15 @@ module.exports = function(grunt) {
       phantom.create(function(err, ph) {
         ph.createPage(function(err, page) {
           if (viewport) {
-            var sets = viewport.match(/(\d+)x(\d+)/g);
+            var sets = viewport.match(/(\d+)x(\d+)/);
             if (sets[1] && sets[2]) {
-              page.viewportSize = {
+              page.set('viewportSize', {
                 width: sets[1],
                 height: sets[2]
-              };
+              });
             }
           }
-          page.zoomFactor = 1;
+          page.set('zoomFactor', 1);
           page.open(url, function(err, status) {
             var dest = filename + '.' + type;
 
@@ -55,8 +55,8 @@ module.exports = function(grunt) {
             });
 
             page.render(path + '/' + dest, function() {
+              grunt.log.writeln('Take a screenshot to ' + dest);
               ph.exit();
-              grunt.log.writeln('here');
               cb();
             });
           });
@@ -67,7 +67,6 @@ module.exports = function(grunt) {
     if (options.remote) {
       if (options.viewport) {
         async.eachSeries(options.viewport, function(item, cb) {
-          grunt.log.writeln(item);
           screenshot({
             path: options.path,
             filename: options.filename + '-' + item,
@@ -75,7 +74,6 @@ module.exports = function(grunt) {
             url: options.remote,
             viewport: item
           }, function() {
-            grunt.log.writeln('end!');
             cb();
           });
         }, function() {
