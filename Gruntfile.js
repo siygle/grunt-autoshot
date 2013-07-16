@@ -32,14 +32,14 @@ module.exports = function(grunt) {
     autoshot: {
       default_options: {
         options: {
-          path: './test',
+          path: './test/screenshot',
           filename: 'screenshot',
           type: 'jpg',
           remote: 'http://www.google.com',
-          //local: {
-          //  path: './test/src',
-          //  port: 7788
-          //},
+          local: {
+            path: './test/src',
+            port: 7788
+          },
           viewport: [
             '1024x768',
             '640x960'

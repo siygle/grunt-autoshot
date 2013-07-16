@@ -23,6 +23,7 @@ module.exports = function(grunt) {
       viewport: ['1920x1080']
     });
 
+    // Core screenshot function using phamtonJS
     var screenshot = function(opts, cb) {
       var viewport = opts.viewport;
       var url = opts.url;
@@ -64,23 +65,32 @@ module.exports = function(grunt) {
       });
     };
 
+    // At least local or remote url should be assigned
+    if (!options.remote && !options.local) {
+      grunt.fail.fatal('At least need one either remote or local url');
+    }
+
+    var hasLocal = false;
     if (options.remote) {
-      if (options.viewport) {
-        async.eachSeries(options.viewport, function(item, cb) {
-          screenshot({
-            path: options.path,
-            filename: options.filename + '-' + item,
-            type: options.type,
-            url: options.remote,
-            viewport: item
-          }, function() {
-            cb();
-          });
+      hasRemote = true;
+      async.eachSeries(options.viewport, function(item, cb) {
+        screenshot({
+          path: options.path,
+          filename: 'remote-' + options.filename + '-' + item,
+          type: options.type,
+          url: options.remote,
+          viewport: item
         }, function() {
-          done();
+          cb();
         });
-      }
-    } else if (options.local) {
+      }, function() {
+        grunt.event.emit('finish', 'remote');
+      });
+    }
+
+    var hasRemote = false;
+    if (options.local) {
+      hasLocal = true;
       http.createServer(
         st({
           path: options.local.path,
@@ -90,7 +100,7 @@ module.exports = function(grunt) {
         async.eachSeries(options.viewport, function(item, cb) {
           screenshot({
             path: options.path,
-            filename: options.filename + '-' + item,
+            filename: 'local-' + options.filename + '-' + item,
             type: options.type,
             url: 'http://localhost:' + options.local.port,
             viewport: item
@@ -98,12 +108,22 @@ module.exports = function(grunt) {
             cb();
           });
         }, function() {
-          done();
+          grunt.event.emit('finish', 'local');
         });
       });
-
-    } else {
-      grunt.fail.fatal('At least need one either remote or local url');
     }
+
+    // Listen event to decide when can stop the task 
+    grunt.event.on('finish', function(eventType) {
+      if (eventType === 'remote') {
+        hasRemote = false;
+      }
+      if (eventType === 'local') {
+        hasLocal = false;
+      }
+      if (!hasRemote && !hasLocal) {
+        done();
+      }
+    });
   });
 };

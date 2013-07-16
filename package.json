@@ -1,6 +1,6 @@
 {
   "name": "grunt-autoshot",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Create a quick screenshot for your site which could help for document or testing.",
   "homepage": "https://github.com//grunt-autoshot",
   "bugs": "https://github.com//grunt-autoshot/issues",
