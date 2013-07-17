@@ -26,7 +26,7 @@ exports.autoshot = {
   default_options: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('test/screenshot/local-screenshot-1920x1080.jpg');
+    var actual = grunt.file.read('test/screenshot/remote-screenshot-1920x1080.jpg');
     var expected = grunt.file.read('test/expected/screenshot.jpg');
     test.equal(actual, expected, 'should generate screenshot of sample site');
 

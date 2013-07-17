@@ -35,7 +35,7 @@ module.exports = function(grunt) {
           path: './test/screenshot',
           filename: 'screenshot',
           type: 'jpg',
-          remote: 'http://www.google.com',
+          remote: 'http://github.com/',
           local: {
             path: './test/src',
             port: 7788
