@@ -2,8 +2,8 @@
   "name": "grunt-autoshot",
   "version": "0.0.1",
   "description": "Create a quick screenshot for your site which could help for document or testing.",
-  "homepage": "https://github.com//grunt-autoshot",
-  "bugs": "https://github.com//grunt-autoshot/issues",
+  "homepage": "https://github.com/Ferrari/grunt-autoshot",
+  "bugs": "https://github.com/Ferrari/grunt-autoshot/issues",
   "author": {
     "name": "Ferrari Lee",
     "email": "shiyung@gmail.com",
@@ -15,7 +15,7 @@
   "main": "Gruntfile.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com//grunt-autoshot"
+    "url": "https://github.com/Ferrari/grunt-autoshot"
   },
   "licenses": [
     {

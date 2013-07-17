@@ -23,12 +23,12 @@ var grunt = require('grunt');
 */
 
 exports.autoshot = {
-  setUp: function(done) {
-    // setup here if necessary
-    done();
-  },
   default_options: function(test) {
-    //TODO
+    test.expect(1);
+
+    var actual = grunt.file.read('test/screenshot/local-screenshot-1920x1080.jpg');
+    var expected = grunt.file.read('test/expected/screenshot.jpg');
+    test.equal(actual, expected, 'should generate screenshot of sample site');
 
     test.done();
   },

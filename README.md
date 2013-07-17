@@ -1,7 +1,7 @@
 # grunt-autoshot
 
-> Create a quick screenshot for your site which could help for document or testing.
-> Inspired by [Testing your responsive design with PhantomJS](http://daker.me/2013/07/testing-your-responsive-design-with-phantomjs.html), also suport different resolution base on your viewport, it's useful to responsive design.
+Create a quick screenshot for your site which could help for document or testing. 
+Inspired by [Testing your responsive design with PhantomJS](http://daker.me/2013/07/testing-your-responsive-design-with-phantomjs.html), also suport different resolution base on your viewport, it's useful to responsive design.
 
 ## Getting Started
 This plugin requires Grunt.
@@ -18,6 +18,8 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-autoshot');
 ```
 
+Final and the most important thing, please make sure [**phantomjs**](http://phantomjs.org/) are in your PATH, cause this plugin use it to generate screenshot, so remember [install](http://phantomjs.org/download.html) first.
+
 ## The "autoshot" task
 
 ### Overview
@@ -28,7 +30,14 @@ grunt.initConfig({
   autoshot: {
     default_options: {
       options: {
-      // Task-specific options go here.
+        // necessary config
+        path: '',
+        filename: '',
+        type: '',
+        // optional config, must set either remote or local
+        remote: '',
+        local: '',
+        viewport: [] 
       },
     },
   },

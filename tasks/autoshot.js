@@ -70,7 +70,7 @@ module.exports = function(grunt) {
       grunt.fail.fatal('At least need one either remote or local url');
     }
 
-    var hasLocal = false;
+    var hasRemote = false;
     if (options.remote) {
       hasRemote = true;
       async.eachSeries(options.viewport, function(item, cb) {
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
       });
     }
 
-    var hasRemote = false;
+    var hasLocal = false;
     if (options.local) {
       hasLocal = true;
       http.createServer(
