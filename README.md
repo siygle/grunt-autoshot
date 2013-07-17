@@ -1,4 +1,4 @@
-# grunt-autoshot
+# grunt-autoshot [![Build Status](https://travis-ci.org/Ferrari/grunt-autoshot.png?branch=master)](https://travis-ci.org/Ferrari/grunt-autoshot)
 
 Create a quick screenshot for your site which could help for document or testing. 
 Inspired by [Testing your responsive design with PhantomJS](http://daker.me/2013/07/testing-your-responsive-design-with-phantomjs.html), also suport different resolution base on your viewport, it's useful to responsive design.
@@ -93,10 +93,6 @@ Autoshot could create the screenshot base on given viewport, it's helpful if you
 ex: ['1024x768', '1920x1080']
 ```
 You could add any resolution you want, just follow the same format.
-
-## Release History
-
-* v0.0.1 - Plugin Initial
 
 ## License
 Copyright (c) 2013 Ferrari Lee. Licensed under the MIT license.
