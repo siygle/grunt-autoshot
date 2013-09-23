@@ -91,6 +91,7 @@ module.exports = function(grunt) {
     var hasLocal = false;
     if (options.local) {
       hasLocal = true;
+      var pages = options.local.pages || ['index.html'];
       http.createServer(
         st({
           path: options.local.path,
@@ -98,15 +99,18 @@ module.exports = function(grunt) {
         })
       ).listen(options.local.port, function() {
         async.eachSeries(options.viewport, function(item, cb) {
-          screenshot({
-            path: options.path,
-            filename: 'local-' + options.filename + '-' + item,
-            type: options.type,
-            url: 'http://localhost:' + options.local.port,
-            viewport: item
-          }, function() {
-            cb();
+          pages.forEach(function(page, index) {
+            screenshot({
+              path: options.path,
+              filename: 'local-' + (pages.length === 1 ? options.filename : page.replace('.html', '')) + '-' + item,
+              type: options.type,
+              url: 'http://localhost:' + options.local.port + '/' + page,
+              viewport: item
+            }, function() {
+              index === 0 ? cb() : '';
+            });
           });
+
         }, function() {
           grunt.event.emit('finish', 'local');
         });
