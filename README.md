@@ -81,6 +81,7 @@ Start a local http server to host your webpage then get the screenshot. There ar
 ```
 {
   path: './dist', // path to directory of the webpage
+  pages: ['index.html', 'index2.html'], // pages to create screenshots, if multiple pages are specified, filename opts is ignored, and page name is used instead (default: ['index.html'])
   port: 8080      // port of startup http server
 }
 ```
