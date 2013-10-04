@@ -18,7 +18,7 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-autoshot');
 ```
 
-Final and the most important thing, please make sure [**phantomjs**](http://phantomjs.org/) are in your PATH, cause this plugin use it to generate screenshot, so remember [install](http://phantomjs.org/download.html) first.
+Final and the most important thing, please make sure [**phantomjs**](http://phantomjs.org/) are in your PATH, if your windows users, please download the phantomjs zip file and decompress it and don't forget to set the environment variable as phantomjs.exe's path. Cause this plugin use phantomjs to generate screenshot, so remember [install](http://phantomjs.org/download.html) it first.
 
 ## The "autoshot" task
 
