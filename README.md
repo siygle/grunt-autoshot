@@ -25,18 +25,32 @@ Final and the most important thing, please make sure [**phantomjs**](http://phan
 ### Overview
 In your project's Gruntfile, add a section named `autoshot` to the data object passed into `grunt.initConfig()`.
 
+**Make a big change of config format from 0.1.0**, thanks @danielhusar and @ryanfitzer opinions, in order to support multiple sources and screenshots and follow the [standard format](http://gruntjs.com/configuring-tasks#files) of grunt.
+
+After 0.1.0, filename and screenshot type all define using grunt file format. So please use those format that phantomjs [support](https://github.com/ariya/phantomjs/wiki/Screen-Capture).
+
+There is a [example](https://github.com/Ferrari/grunt-autoshot/blob/master/Gruntfile.js#L32) of new Gruntfile format.
+
 ```js
 grunt.initConfig({
   autoshot: {
     default_options: {
       options: {
         // necessary config
-        path: '',
-        filename: '',
-        type: '',
+        path: SCREENSHOT_DIRECTORY_PATH,
         // optional config, must set either remote or local
-        remote: '',
-        local: '',
+        remote: {
+          files: [
+            { src: REMOTE_SITE_URL, dest: FILENAME(INCLUDE FILE TYPE) }
+          ]
+        },
+        local: {
+          path: LOCAL_FILE_PATH,
+          port: LOCAL_SERVER_PORT,
+          files: [
+            { src: LOCAL_FILENAME, dest: FILENAME(INCLUDE FILE TYPE) }
+          ]
+        },
         viewport: [] 
       },
     },
@@ -50,6 +64,45 @@ grunt.initConfig({
 Type: `String`
 
 Path to the directory which screenshots will be saved.
+
+#### options.remote
+Type: String
+
+New format after 0.1.0, now you have to assign the source url and your screenshot file, include it's format, like following:
+```js
+remote: {
+  files: [
+    { src: "http://www.google.com", dest: "google.png" }
+  ]
+}
+```
+
+#### options.local
+Type: String
+
+Start a local http server to host your webpage then get the screenshot. 
+
+Just like options.remote, you need to assign your local filename and screenshot filename, including it's format.
+```js
+local: {
+  path: './dist', // path to directory of the webpage
+  port: 8080      // port of startup http server
+  files: [        // local filename and screenshot filename
+    { src: "index.html", dest: "screenshot.jpg" }
+  ]
+}
+```
+
+#### options.viewport
+Type: Array
+
+Autoshot could create the screenshot base on given viewport, it's helpful if you want to test responsive webpage.
+```
+ex: ['1024x768', '1920x1080']
+```
+You could add any resolution you want, just follow the same format.
+
+### Deprecated (Don't support after 0.1.0)
 
 #### options.filename
 Type: `String`
@@ -65,34 +118,6 @@ Type: String
 
 Image type of screenshot.  
 PhantomJS supports JPEG, PNG, GIF and PDF right now.
-
-#### options.remote
-Type: String
-
-The url of target webpage.
-```
-ex: http://www.google.com
-```
-
-#### options.local
-Type: String
-
-Start a local http server to host your webpage then get the screenshot. There are several config options:
-```
-{
-  path: './dist', // path to directory of the webpage
-  port: 8080      // port of startup http server
-}
-```
-
-#### options.viewport
-Type: Array
-
-Autoshot could create the screenshot base on given viewport, it's helpful if you want to test responsive webpage.
-```
-ex: ['1024x768', '1920x1080']
-```
-You could add any resolution you want, just follow the same format.
 
 ## License
 Copyright (c) 2013 Ferrari Lee. Licensed under the MIT license.

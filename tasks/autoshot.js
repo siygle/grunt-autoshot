@@ -18,18 +18,32 @@ module.exports = function(grunt) {
     var done = this.async();
     var options = this.options({
       path: __dirname + '/screenshot',
-      type: 'jpg',
-      name: 'screenshot',
+      remote: {
+        files: [
+          {src: "http://www.google.com", dest: "google.jpg"}
+        ]
+      },
+      local: {
+        path: "./dist",
+        port: 8080,
+        files: [
+          {src: "index.html", dest: "screenshot.jpg"}
+        ]
+      },
+      //type: 'jpg',
+      //name: 'screenshot',
       viewport: ['1920x1080']
     });
 
     // Core screenshot function using phamtonJS
     var screenshot = function(opts, cb) {
       var viewport = opts.viewport;
-      var url = opts.url;
-      var filename = opts.filename;
+      //var url = opts.url;
+      //var filename = opts.filename;
       var type = opts.type;
       var path = opts.path;
+      var src = opts.src;
+      var dest = opts.dest;
 
       phantom.create(function(err, ph) {
         ph.createPage(function(err, page) {
@@ -43,8 +57,9 @@ module.exports = function(grunt) {
             }
           }
           page.set('zoomFactor', 1);
-          page.open(url, function(err, status) {
-            var dest = filename + '.' + type;
+          page.open(src, function(err, status) {
+            //var dest = filename + '.' + type;
+            var target = type + '-' + viewport + '-' + dest;
 
             // Background problem under self-host server
             page.evaluate(function() {
@@ -55,8 +70,8 @@ module.exports = function(grunt) {
               document.head.insertBefore(style, document.head.firstChild);
             });
 
-            page.render(path + '/' + dest, function() {
-              grunt.log.writeln('Take a screenshot to ' + dest);
+            page.render(path + '/' + target, function() {
+              grunt.log.writeln('Take a screenshot to ' + target);
               ph.exit();
               cb();
             });
@@ -73,15 +88,21 @@ module.exports = function(grunt) {
     var hasRemote = false;
     if (options.remote) {
       hasRemote = true;
-      async.eachSeries(options.viewport, function(item, cb) {
-        screenshot({
-          path: options.path,
-          filename: 'remote-' + options.filename + '-' + item,
-          type: options.type,
-          url: options.remote,
-          viewport: item
+      async.eachSeries(options.remote.files, function(file, outerCb) {
+        async.eachSeries(options.viewport, function(view, cb) {
+          screenshot({
+            path: options.path,
+            //filename: 'remote-' + item.src + '-' + view,
+            type: "remote",
+            //url: file.src
+            viewport: view,
+            src: file.src,
+            dest: file.dest
+          }, function() {
+            cb();
+          });
         }, function() {
-          cb();
+          outerCb();
         });
       }, function() {
         grunt.event.emit('finish', 'remote');
@@ -91,24 +112,27 @@ module.exports = function(grunt) {
     var hasLocal = false;
     if (options.local) {
       hasLocal = true;
-      http.createServer(
-        st({
-          path: options.local.path,
-          index: 'index.html'
-        })
-      ).listen(options.local.port, function() {
-        async.eachSeries(options.viewport, function(item, cb) {
-          screenshot({
-            path: options.path,
-            filename: 'local-' + options.filename + '-' + item,
-            type: options.type,
-            url: 'http://localhost:' + options.local.port,
-            viewport: item
+      async.eachSeries(options.local.files, function(file, outerCb) {
+        var mount = st({path: options.local.path, index: file.src});
+        http.createServer(function(req, res) {
+          mount(req, res);
+        }).listen(options.local.port, function() {
+          async.eachSeries(options.viewport, function(view, cb) {
+            screenshot({
+              path: options.path,
+              //filename: 'local-' + options.filename + '-' + item,
+              //type: options.type,
+              //url: 'http://localhost:' + options.local.port,
+              type: 'local',
+              viewport: view, 
+              src: 'http://localhost:' + options.local.port + '/' + file.src,
+              dest: file.dest
+            }, function() {
+              cb();
+            });
           }, function() {
-            cb();
+            grunt.event.emit('finish', 'local');
           });
-        }, function() {
-          grunt.event.emit('finish', 'local');
         });
       });
     }
