@@ -18,18 +18,6 @@ module.exports = function(grunt) {
     var done = this.async();
     var options = this.options({
       path: __dirname + '/screenshot',
-      remote: {
-        files: [
-          {src: "http://www.google.com", dest: "google.jpg"}
-        ]
-      },
-      local: {
-        path: "./dist",
-        port: 8080,
-        files: [
-          {src: "index.html", dest: "screenshot.jpg"}
-        ]
-      },
       //type: 'jpg',
       //name: 'screenshot',
       viewport: ['1920x1080']
