@@ -44,8 +44,12 @@ module.exports = function(grunt) {
       var path = opts.path;
       var src = opts.src;
       var dest = opts.dest;
+      var preCreate = opts.preCreate;
 
       phantom.create(function(err, ph) {
+        if (typeof preCreate === 'function') {
+            preCreate(ph);
+        }
         ph.createPage(function(err, page) {
           if (viewport) {
             var sets = viewport.match(/(\d+)x(\d+)/);
@@ -97,7 +101,8 @@ module.exports = function(grunt) {
             //url: file.src
             viewport: view,
             src: file.src,
-            dest: file.dest
+            dest: file.dest,
+            preCreate: options.preCreate
           }, function() {
             cb();
           });
@@ -126,7 +131,8 @@ module.exports = function(grunt) {
               type: 'local',
               viewport: view, 
               src: 'http://localhost:' + options.local.port + '/' + file.src,
-              dest: file.dest
+              dest: file.dest,
+              preCreate: options.preCreate
             }, function() {
               cb();
             });
