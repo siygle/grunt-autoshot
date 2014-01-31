@@ -30,16 +30,12 @@ module.exports = function(grunt) {
           {src: "index.html", dest: "screenshot.jpg"}
         ]
       },
-      //type: 'jpg',
-      //name: 'screenshot',
       viewport: ['1920x1080']
     });
 
     // Core screenshot function using phamtonJS
     var screenshot = function(opts, cb) {
       var viewport = opts.viewport;
-      //var url = opts.url;
-      //var filename = opts.filename;
       var type = opts.type;
       var path = opts.path;
       var src = opts.src;
@@ -58,7 +54,6 @@ module.exports = function(grunt) {
           }
           page.set('zoomFactor', 1);
           page.open(src, function(err, status) {
-            //var dest = filename + '.' + type;
             var target = type + '-' + viewport + '-' + dest;
 
             // Background problem under self-host server
@@ -92,9 +87,7 @@ module.exports = function(grunt) {
         async.eachSeries(options.viewport, function(view, cb) {
           screenshot({
             path: options.path,
-            //filename: 'remote-' + item.src + '-' + view,
             type: "remote",
-            //url: file.src
             viewport: view,
             src: file.src,
             dest: file.dest
@@ -120,9 +113,6 @@ module.exports = function(grunt) {
           async.eachSeries(options.viewport, function(view, cb) {
             screenshot({
               path: options.path,
-              //filename: 'local-' + options.filename + '-' + item,
-              //type: options.type,
-              //url: 'http://localhost:' + options.local.port,
               type: 'local',
               viewport: view, 
               src: 'http://localhost:' + options.local.port + '/' + file.src,
