@@ -41,14 +41,14 @@ grunt.initConfig({
         // optional config, must set either remote or local
         remote: {
           files: [
-            { src: REMOTE_SITE_URL, dest: FILENAME(INCLUDE FILE TYPE) }
+            { src: REMOTE_SITE_URL, dest: FILENAME(INCLUDE FILE TYPE), delay: DELAY_MILLISECOND }
           ]
         },
         local: {
           path: LOCAL_FILE_PATH,
           port: LOCAL_SERVER_PORT,
           files: [
-            { src: LOCAL_FILENAME, dest: FILENAME(INCLUDE FILE TYPE) }
+            { src: LOCAL_FILENAME, dest: FILENAME(INCLUDE FILE TYPE), delay: DELAY_MILLISECOND }
           ]
         },
         viewport: [] 
@@ -68,14 +68,17 @@ Path to the directory which screenshots will be saved.
 #### options.remote
 Type: String
 
-New format after 0.1.0, now you have to assign the source url and your screenshot file, include it's format, like following:
+New format after 0.1.0, now you have to assign the source url and your screenshot file, include it's format, like following.  
+After **0.2.0**, it support `delay`. Let it wait a given time(millisecond) before take a screenshot:
+
 ```js
 remote: {
   files: [
-    { src: "http://www.google.com", dest: "google.png" }
+    { src: "http://www.google.com", dest: "google.png", delay: 3000 },
   ]
 }
 ```
+
 
 #### options.local
 Type: String
@@ -88,7 +91,7 @@ local: {
   path: './dist', // path to directory of the webpage
   port: 8080      // port of startup http server
   files: [        // local filename and screenshot filename
-    { src: "index.html", dest: "screenshot.jpg" }
+    { src: "index.html", dest: "screenshot.jpg", delay: 3000 }
   ]
 }
 ```
@@ -102,22 +105,11 @@ ex: ['1024x768', '1920x1080']
 ```
 You could add any resolution you want, just follow the same format.
 
-### Deprecated (Don't support after 0.1.0)
+### emitter.setMaxListeners
 
-#### options.filename
-Type: `String`
+Upgrade all dependencies when it upgrade to 0.2.0. When [node-phantom-simple](https://github.com/baudehlo/node-phantom-simple) upgrade to latest(1.0.16), it will have [setMaxListeners](http://nodejs.org/api/events.html#events_emitter_setmaxlisteners_n) issue cause it listen [uncaughtException](https://github.com/baudehlo/node-phantom-simple/blob/master/node-phantom-simple.js#L84). When user take a lot of screenshot it will over the limit.
 
-Default filename of screenshots.  
-It will combine with local, remote and viewport.
-```
-ex: [local|remote]-{filename}-{viewport}
-```
-
-#### options.type
-Type: String
-
-Image type of screenshot.  
-PhantomJS supports JPEG, PNG, GIF and PDF right now.
+I [disable] the warn cause it should be ok. But please make sure you did not run autoshot in some special cases.
 
 ## License
 Copyright (c) 2013 Ferrari Lee. Licensed under the MIT license.

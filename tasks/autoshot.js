@@ -14,6 +14,7 @@ module.exports = function(grunt) {
   var http = require('http');
   var async = require('async');
 
+  process.setMaxListeners(0);
   grunt.registerMultiTask('autoshot', 'Create a quick screenshot for your site which could help for document or testing.', function() {
     var done = this.async();
     var options = this.options({
@@ -40,9 +41,10 @@ module.exports = function(grunt) {
       var path = opts.path;
       var src = opts.src;
       var dest = opts.dest;
+      var delay = opts.delay;
 
       phantom.create(function(err, ph) {
-        ph.createPage(function(err, page) {
+        return ph.createPage(function(err, page) {
           if (viewport) {
             var sets = viewport.match(/(\d+)x(\d+)/);
             if (sets[1] && sets[2]) {
@@ -53,7 +55,7 @@ module.exports = function(grunt) {
             }
           }
           page.set('zoomFactor', 1);
-          page.open(src, function(err, status) {
+          return page.open(src, function(err, status) {
             var target = type + '-' + viewport + '-' + dest;
 
             // Background problem under self-host server
@@ -65,11 +67,21 @@ module.exports = function(grunt) {
               document.head.insertBefore(style, document.head.firstChild);
             });
 
-            page.render(path + '/' + target, function() {
-              grunt.log.writeln('Take a screenshot to ' + target);
-              ph.exit();
-              cb();
-            });
+            if (delay) {
+              setTimeout(function() {
+                page.render(path + '/' + target, function() {
+                  grunt.log.writeln('Delay ' + delay + ' to take a screenshot to ' + target);
+                  ph.exit();
+                  cb();
+                });
+              }, delay);
+            } else {
+              page.render(path + '/' + target, function() {
+                grunt.log.writeln('Take a screenshot to ' + target);
+                ph.exit();
+                cb();
+              });
+            }
           });
         });
       });
@@ -90,7 +102,8 @@ module.exports = function(grunt) {
             type: "remote",
             viewport: view,
             src: file.src,
-            dest: file.dest
+            dest: file.dest,
+            delay: file.delay
           }, function() {
             cb();
           });
@@ -107,7 +120,7 @@ module.exports = function(grunt) {
       hasLocal = true;
       async.eachSeries(options.local.files, function(file, outerCb) {
         var mount = st({path: options.local.path, index: file.src});
-        http.createServer(function(req, res) {
+        var server = http.createServer(function(req, res) {
           mount(req, res);
         }).listen(options.local.port, function() {
           async.eachSeries(options.viewport, function(view, cb) {
@@ -116,14 +129,18 @@ module.exports = function(grunt) {
               type: 'local',
               viewport: view, 
               src: 'http://localhost:' + options.local.port + '/' + file.src,
-              dest: file.dest
+              dest: file.dest,
+              delay: file.delay
             }, function() {
               cb();
             });
           }, function() {
-            grunt.event.emit('finish', 'local');
+            server.close();
+            outerCb();
           });
         });
+      }, function() {
+        grunt.event.emit('finish', 'local');
       });
     }
 

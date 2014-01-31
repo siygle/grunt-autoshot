@@ -5,6 +5,9 @@ page.open('http://www.google.com', function() {
   page.evaluate(function () {
     document.body.bgColor = 'white';
   });
-  page.render('test/expected/remote.png');
-  phantom.exit();
+
+  setTimeout(function() {
+      page.render('test/expected/remote.png');
+      phantom.exit();
+  }, 3000);
 })

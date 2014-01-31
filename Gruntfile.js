@@ -36,14 +36,15 @@ module.exports = function(grunt) {
           remote: {
             files: [
               { src: "http://getbootstrap.com", dest: "bootstrap.jpg" },
-              { src: "http://www.google.com", dest: "google.png" }
+              { src: "http://www.google.com", dest: "google.png", delay: "3000" }
             ]
           },
           local: {
             path: './test/src',
             port: 7788,
             files: [
-              { src: "index.html", dest: "screenshot.jpg" }
+              { src: "index.html", dest: "screenshot.jpg" },
+              { src: "ajax.html", dest: "ajax.jpg", delay: "3000" }
             ]
           },
           viewport: [
