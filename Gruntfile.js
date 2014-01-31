@@ -44,7 +44,7 @@ module.exports = function(grunt) {
             port: 7788,
             files: [
               { src: "index.html", dest: "screenshot.jpg" },
-              { src: "ajax.html", dest: "ajax.jpg", delay: "3000" }
+              { src: "ajax.html", dest: "ajax.jpg", delay: "5000" }
             ]
           },
           viewport: [
