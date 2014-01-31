@@ -68,8 +68,7 @@ Path to the directory which screenshots will be saved.
 #### options.remote
 Type: String
 
-New format after 0.1.0, now you have to assign the source url and your screenshot file, include it's format, like following.  
-After **0.2.0**, it support `delay`. Let it wait a given time(millisecond) before take a screenshot:
+New format after 0.1.0, now you have to assign the source url and your screenshot file, include it's format, like following. After **0.2.0**, it support `delay`. Let it wait a given time(millisecond) before take a screenshot:
 
 ```js
 remote: {
@@ -109,7 +108,7 @@ You could add any resolution you want, just follow the same format.
 
 Upgrade all dependencies when it upgrade to 0.2.0. When [node-phantom-simple](https://github.com/baudehlo/node-phantom-simple) upgrade to latest(1.0.16), it will have [setMaxListeners](http://nodejs.org/api/events.html#events_emitter_setmaxlisteners_n) issue cause it listen [uncaughtException](https://github.com/baudehlo/node-phantom-simple/blob/master/node-phantom-simple.js#L84). When user take a lot of screenshot it will over the limit.
 
-I [disable] the warn cause it should be ok. But please make sure you did not run autoshot in some special cases.
+I [disable](https://github.com/Ferrari/grunt-autoshot/blob/master/tasks/autoshot.js#L17) the warn cause it should be ok. But please make sure you did not run autoshot in some special cases.
 
 ## License
 Copyright (c) 2013 Ferrari Lee. Licensed under the MIT license.
