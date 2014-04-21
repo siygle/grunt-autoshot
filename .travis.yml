@@ -4,6 +4,4 @@ node_js:
 before_install:
     - npm install -g grunt-cli
 script:
-    - phantomjs test/expected/generate_local.js
-    - phantomjs test/expected/generate_remote.js
-    - npm test
+    - grunt

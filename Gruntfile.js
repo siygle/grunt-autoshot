@@ -33,12 +33,6 @@ module.exports = function(grunt) {
       default_options: {
         options: {
           path: './test/screenshot',
-          remote: {
-            files: [
-              { src: 'http://getbootstrap.com', dest: 'bootstrap.jpg' },
-              { src: 'http://www.google.com', dest: 'google.png' }
-            ]
-          },
           local: {
             path: './test/src',
             port: 7788,
