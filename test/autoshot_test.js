@@ -25,11 +25,13 @@ var grunt = require('grunt');
 exports.autoshot = {
   default_options: function(test) {
     test.expect(1);
-    var local, remote, expected;
+    var local, remote, expected, localBase64, expectedBase64;
 
     local = grunt.file.read('test/screenshot/local-1920x1080-screenshot.jpg');
     expected = grunt.file.read('test/expected/local.jpg');
-    test.equal(local, expected, 'should generate screenshot of sample site at local');
+    localBase64 = new Buffer(local.toString()).toString('base64');
+    expectedBase64 = new Buffer(expected.toString()).toString('base64');
+    test.equal(localBase64, expectedBase64, 'should generate screenshot of sample site at local');
 
     test.done();
   }
