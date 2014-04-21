@@ -81,7 +81,7 @@ module.exports = function(grunt) {
           screenshot({
             path: options.path,
             //filename: 'remote-' + item.src + '-' + view,
-            type: "remote",
+            type: 'remote',
             //url: file.src
             viewport: view,
             src: file.src,
@@ -112,7 +112,7 @@ module.exports = function(grunt) {
               //type: options.type,
               //url: 'http://localhost:' + options.local.port,
               type: 'local',
-              viewport: view, 
+              viewport: view,
               src: 'http://localhost:' + options.local.port + '/' + file.src,
               dest: file.dest
             }, function() {
@@ -125,7 +125,7 @@ module.exports = function(grunt) {
       });
     }
 
-    // Listen event to decide when can stop the task 
+    // Listen event to decide when can stop the task
     grunt.event.on('finish', function(eventType) {
       if (eventType === 'remote') {
         hasRemote = false;
