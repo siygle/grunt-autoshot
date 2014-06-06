@@ -43,6 +43,7 @@ module.exports = function(grunt) {
       var src = opts.src;
       var dest = opts.dest;
       var delay = opts.delay;
+      var crop = opts.crop;
 
       phantom.create(function(err, ph) {
         return ph.createPage(function(err, page) {
@@ -54,6 +55,15 @@ module.exports = function(grunt) {
                 height: sets[2]
               });
             }
+
+          }
+          if (crop) {
+            console.log(page);
+            // page.set('cliprect', {
+            //   top: 0,
+            //   left: 0,
+            //   width:
+            // });
           }
           page.set('zoomFactor', 1);
           return page.open(src, function(err, status) {
@@ -104,7 +114,8 @@ module.exports = function(grunt) {
             viewport: view,
             src: file.src,
             dest: file.dest,
-            delay: file.delay
+            delay: file.delay,
+            crop: options.crop
           }, function() {
             cb();
           });
@@ -131,7 +142,8 @@ module.exports = function(grunt) {
               viewport: view, 
               src: 'http://localhost:' + options.local.port + '/' + file.src,
               dest: file.dest,
-              delay: file.delay
+              delay: file.delay,
+              crop: options.crop
             }, function() {
               cb();
             });
