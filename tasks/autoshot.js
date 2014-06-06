@@ -31,7 +31,8 @@ module.exports = function(grunt) {
           {src: "index.html", dest: "screenshot.jpg"}
         ]
       },
-      viewport: ['1920x1080']
+      viewport: ['1920x1080'],
+      crop: true
     });
 
     // Core screenshot function using phamtonJS
