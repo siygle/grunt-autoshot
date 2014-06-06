@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         ]
       },
       viewport: ['1920x1080'],
-      crop: true
+      crop: false
     });
 
     // Core screenshot function using phamtonJS
@@ -56,15 +56,18 @@ module.exports = function(grunt) {
               });
             }
 
+            // crop to viewport size
+            if (crop) {
+              page.set('clipRect', {
+                top: 0,
+                left: 0,
+                width: sets[1],
+                height: sets[2]
+              });
+            }
+
           }
-          if (crop) {
-            console.log(page);
-            // page.set('cliprect', {
-            //   top: 0,
-            //   left: 0,
-            //   width:
-            // });
-          }
+
           page.set('zoomFactor', 1);
           return page.open(src, function(err, status) {
             var target = type + '-' + viewport + '-' + dest;
