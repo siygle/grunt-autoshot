@@ -35,7 +35,7 @@ exports.autoshot = {
     expected = grunt.file.read('test/expected/local.jpg');
     test.equal(local, expected, 'should generate screenshot of sample site at local(delay)');
 
-    remote = grunt.file.read('test/screenshot/remote-1920x1080-google.png');
+    remote = grunt.file.read('test/screenshot/remote-1920x1080-bootstrap.png');
     expected = grunt.file.read('test/expected/remote.png');
     test.equal(remote, expected, 'should generate screenshot of sample site from remote');
 
