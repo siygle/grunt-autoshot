@@ -44,6 +44,10 @@ module.exports = function(grunt) {
       var delay = opts.delay;
 
       phantom.create(function(err, ph) {
+        if (err) {
+          grunt.fail.warn(err.message);
+          return;
+        }
         return ph.createPage(function(err, page) {
           if (viewport) {
             var sets = viewport.match(/(\d+)x(\d+)/);
@@ -84,6 +88,8 @@ module.exports = function(grunt) {
             }
           });
         });
+      }, {
+        phantomPath: require('phantomjs').path
       });
     };
 
