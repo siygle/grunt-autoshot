@@ -51,7 +51,8 @@ grunt.initConfig({
             { src: LOCAL_FILENAME, dest: FILENAME(INCLUDE FILE TYPE), delay: DELAY_MILLISECOND }
           ]
         },
-        viewport: [] 
+        viewport: [],
+        crop: false 
       },
     },
   },
@@ -103,6 +104,11 @@ Autoshot could create the screenshot base on given viewport, it's helpful if you
 ex: ['1024x768', '1920x1080']
 ```
 You could add any resolution you want, just follow the same format.
+
+#### options.crop
+Type: Boolean. Default: false
+
+Crop screenshots to the size(s) provided in options.viewport. This is useful if you need all your screenshots to have the same width/height.
 
 ### emitter.setMaxListeners
 

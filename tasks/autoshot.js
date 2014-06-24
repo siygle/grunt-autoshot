@@ -31,7 +31,8 @@ module.exports = function(grunt) {
           {src: "index.html", dest: "screenshot.jpg"}
         ]
       },
-      viewport: ['1920x1080']
+      viewport: ['1920x1080'],
+      crop: false
     });
 
     // Core screenshot function using phamtonJS
@@ -42,6 +43,7 @@ module.exports = function(grunt) {
       var src = opts.src;
       var dest = opts.dest;
       var delay = opts.delay;
+      var crop = opts.crop;
 
       phantom.create(function(err, ph) {
         if (err) {
@@ -57,7 +59,19 @@ module.exports = function(grunt) {
                 height: sets[2]
               });
             }
+
+            // crop to viewport size
+            if (crop) {
+              page.set('clipRect', {
+                top: 0,
+                left: 0,
+                width: sets[1],
+                height: sets[2]
+              });
+            }
+
           }
+
           page.set('zoomFactor', 1);
           return page.open(src, function(err, status) {
             var target = type + '-' + viewport + '-' + dest;
@@ -109,7 +123,8 @@ module.exports = function(grunt) {
             viewport: view,
             src: file.src,
             dest: file.dest,
-            delay: file.delay
+            delay: file.delay,
+            crop: options.crop
           }, function() {
             cb();
           });
@@ -136,7 +151,8 @@ module.exports = function(grunt) {
               viewport: view, 
               src: 'http://localhost:' + options.local.port + '/' + file.src,
               dest: file.dest,
-              delay: file.delay
+              delay: file.delay,
+              crop: options.crop
             }, function() {
               cb();
             });

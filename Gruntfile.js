@@ -51,7 +51,8 @@ module.exports = function(grunt) {
             '1920x1080',
             '1024x768',
             '640x960'
-          ]
+          ],
+          crop: false
         },
       },
     },
