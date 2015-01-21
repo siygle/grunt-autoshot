@@ -43,6 +43,10 @@ module.exports = function(grunt) {
       var dest = opts.dest;
       var delay = opts.delay;
 
+      var fps = opts.fps;
+      var duration = opts.duration;
+      var doSequence = (fps && duration ? true : false);
+
       phantom.create(function(err, ph) {
         if (err) {
           grunt.fail.warn(err.message);
@@ -71,20 +75,58 @@ module.exports = function(grunt) {
               document.head.insertBefore(style, document.head.firstChild);
             });
 
-            if (delay) {
-              setTimeout(function() {
+            if (doSequence) {
+              // take sequence of sreenshots
+              var splitTarget = target.split('.');
+              var basename = splitTarget.slice(0, splitTarget.length-1).join('');
+              var ext = splitTarget.slice(splitTarget.length-1).join('');
+              var nFrames = fps * (duration / 1000);
+              var freq = 1000 / fps;
+
+              var takeSequence = function() {
+                var count = 0;
+                var finishedFrames = 0;
+                var interval = setInterval(function () {
+                  var seqTarget = basename + '_' + count + '.' + ext;
+                  if (count <= nFrames) {
+                    page.render(path + '/' + seqTarget, function () {
+                      grunt.log.writeln('Take a screenshot to ' + seqTarget);
+                      finishedFrames++;
+                      if (finishedFrames >= nFrames) {
+                        ph.exit();
+                        cb();
+                      }
+                    });
+                  } else {
+                    clearInterval(interval);
+                  }
+                  count++;
+                }, freq)
+              };
+
+              if (delay) {
+                setTimeout(takeSequence, delay);
+              } else {
+                takeSequence();
+              }
+
+            } else {
+              // take single screenshot
+              if (delay) {
+                setTimeout(function() {
+                  page.render(path + '/' + target, function() {
+                    grunt.log.writeln('Delay ' + delay + ' to take a screenshot to ' + target);
+                    ph.exit();
+                    cb();
+                  });
+                }, delay);
+              } else {
                 page.render(path + '/' + target, function() {
-                  grunt.log.writeln('Delay ' + delay + ' to take a screenshot to ' + target);
+                  grunt.log.writeln('Take a screenshot to ' + target);
                   ph.exit();
                   cb();
                 });
-              }, delay);
-            } else {
-              page.render(path + '/' + target, function() {
-                grunt.log.writeln('Take a screenshot to ' + target);
-                ph.exit();
-                cb();
-              });
+              }
             }
           });
         });
@@ -109,7 +151,9 @@ module.exports = function(grunt) {
             viewport: view,
             src: file.src,
             dest: file.dest,
-            delay: file.delay
+            delay: file.delay,
+            fps: file.fps,
+            duration: file.duration
           }, function() {
             cb();
           });
@@ -133,10 +177,12 @@ module.exports = function(grunt) {
             screenshot({
               path: options.path,
               type: 'local',
-              viewport: view, 
+              viewport: view,
               src: 'http://localhost:' + options.local.port + '/' + file.src,
               dest: file.dest,
-              delay: file.delay
+              delay: file.delay,
+              fps: file.fps,
+              duration: file.duration
             }, function() {
               cb();
             });
@@ -150,7 +196,7 @@ module.exports = function(grunt) {
       });
     }
 
-    // Listen event to decide when can stop the task 
+    // Listen event to decide when can stop the task
     grunt.event.on('finish', function(eventType) {
       if (eventType === 'remote') {
         hasRemote = false;
