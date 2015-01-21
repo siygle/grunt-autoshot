@@ -16,7 +16,6 @@
     "smarttabs": true,
     "laxcomma": true,
     "asi": true,
-    "es5": true,
     "undef": false,
     "unused": false,
     "globals": {

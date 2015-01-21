@@ -21,14 +21,14 @@ module.exports = function(grunt) {
       path: __dirname + '/screenshot',
       remote: {
         files: [
-          {src: "http://www.google.com", dest: "google.jpg"}
+          {src: 'http://www.google.com', dest: 'google.jpg'}
         ]
       },
       local: {
-        path: "./dist",
+        path: './dist',
         port: 8080,
         files: [
-          {src: "index.html", dest: "screenshot.jpg"}
+          {src: 'index.html', dest: 'screenshot.jpg'}
         ]
       },
       viewport: ['1920x1080']
@@ -147,7 +147,7 @@ module.exports = function(grunt) {
         async.eachSeries(options.viewport, function(view, cb) {
           screenshot({
             path: options.path,
-            type: "remote",
+            type: 'remote',
             viewport: view,
             src: file.src,
             dest: file.dest,
