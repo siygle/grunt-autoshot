@@ -18,14 +18,17 @@ module.exports = function (grunt) {
     grunt.registerMultiTask('autoshot', 'Create a quick screenshot for your site which could help for document or testing.', function () {
         var done = this.async();
         var options = this.options({
-            path: __dirname + '/screenshot',
             remote: false,//don't fill in any defaultsc
             local: false,
-            phantomOptions: {}
+            phantomParams: {}
         });
 
-        var phantomOptions = options.phantomOptions || {};
-        phantomOptions.phantomPath = require('phantomjs2').path;
+        var phantomOptions = {
+            phantomPath: require('phantomjs2').path,
+            parameters: options.phantomParams || {}
+        };
+
+        console.log('phantomOptions = ', phantomOptions);
 
         // Core screenshot function using phamtonJS
         var screenshot = function (opts, cb) {

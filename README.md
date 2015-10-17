@@ -110,5 +110,18 @@ Upgrade all dependencies when it upgrade to 0.2.0. When [node-phantom-simple](ht
 
 I [disable](https://github.com/Ferrari/grunt-autoshot/blob/master/tasks/autoshot.js#L17) the warn cause it should be ok. But please make sure you did not run autoshot in some special cases.
 
+### options.phantomParams
+
+Command-line parameters to ass to Phantom JS (Leave out the "--" prefix).
+
+```
+ex: phantomParams : {
+  'local-to-remote-url-access': true, //translates to local-to-remote-url-access=true
+  'web-security': false //translates to --web-security=false
+},
+              
+```
+
+
 ## License
 Copyright (c) 2013 Ferrari Lee. Licensed under the MIT license.

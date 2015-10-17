@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body><pre>Should be replaced by yahoo home page</pre>
+
+</body>
+<script>
+    var elem = document.querySelector('pre');
+    var x = new XMLHttpRequest();
+    var url ='http://www.amgapps.com/helloworld.html';
+    x.open('get', url, true);
+    x.onreadystatechange = function(){
+        try{
+            elem.innerHTML = 'success: '+ this.responseText + '(url=' + url + ')';
+        } catch(e){
+            elem.innerHTML = 'error: ' + JSON.stringify(e);
+        }
+    }
+    x.send();
+
+
+</script>
+</html>
