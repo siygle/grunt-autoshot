@@ -36,6 +36,6 @@
     "st": "~0.2.3",
     "async": "~0.2.10",
     "node-phantom-simple": "~1.2.0",
-    "phantomjs": "~2.0"
+    "phantomjs2": "~2.0"
   }
 }
