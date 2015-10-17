@@ -48,6 +48,7 @@ module.exports = function (grunt) {
                     if (viewport) {
                         var sets = viewport.match(/(\d+)x(\d+)/);
                         if (sets[1] && sets[2]) {
+                            //console.log("Restricting to resolution: " + sets[1] + 'x' + sets[2]);
                             page.set('viewportSize', {
                                 width: sets[1],
                                 height: sets[2]
