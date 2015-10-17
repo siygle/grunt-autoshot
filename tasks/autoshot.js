@@ -20,8 +20,12 @@ module.exports = function (grunt) {
         var options = this.options({
             path: __dirname + '/screenshot',
             remote: false,//don't fill in any defaultsc
-            local: false
+            local: false,
+            phantomOptions: {}
         });
+
+        var phantomOptions = options.phantomOptions || {};
+        phantomOptions.phantomPath = require('phantomjs2').path;
 
         // Core screenshot function using phamtonJS
         var screenshot = function (opts, cb) {
@@ -31,12 +35,6 @@ module.exports = function (grunt) {
             var src = opts.src;
             var dest = opts.dest;
             var delay = opts.delay;
-            var phantomOptions = {
-                localToRemoteUrlAccessEnabled: true,
-                webSecurityEnabled: false,
-                phantomPath: require('phantomjs2').path
-            };
-
 
             phantom.create(function (err, ph) {
                 if (err) {
