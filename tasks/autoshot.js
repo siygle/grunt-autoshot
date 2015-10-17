@@ -59,6 +59,9 @@ module.exports = function(grunt) {
             }
           }
           page.set('zoomFactor', 1);
+          page.settings.localToRemoteUrlAccessEnabled = true;
+          page.settings.webSecurityEnabled = false;
+          
           return page.open(src, function(err, status) {
             var target = type + '-' + viewport + '-' + dest;
 
