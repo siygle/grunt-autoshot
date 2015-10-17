@@ -19,19 +19,8 @@ module.exports = function(grunt) {
     var done = this.async();
     var options = this.options({
       path: __dirname + '/screenshot',
-      remote: {
-        files: [
-          {src: "http://www.google.com", dest: "google.jpg"}
-        ]
-      },
-      local: {
-        path: "./dist",
-        port: 8080,
-        files: [
-          {src: "index.html", dest: "screenshot.jpg"}
-        ]
-      },
-      viewport: ['1920x1080']
+      remote: false,//don't fill in any defaultsc
+      local: false
     });
 
     // Core screenshot function using phamtonJS
