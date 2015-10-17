@@ -119,6 +119,37 @@ ex: phantomParams : {
   'local-to-remote-url-access': true, //translates to local-to-remote-url-access=true
   'web-security': false //translates to --web-security=false
 },
+```
+
+**At time of writing, available options from http://phantomjs.org/api/command-line.html were:**
+
+Command-line Options
+
+Supported command-line options are:
+
+```
+  --help or -h lists all possible command-line options. Halts immediately, will not run a script passed as argument.
+  --version or -v prints out the version of PhantomJS. Halts immediately, will not run a script passed as argument.
+  --cookies-file=/path/to/cookies.txt specifies the file name to store the persistent Cookies.
+  --disk-cache=[true|false] enables disk cache (at desktop services cache storage location, default is false). Also accepted: [yes|no].
+  --ignore-ssl-errors=[true|false] ignores SSL errors, such as expired or self-signed certificate errors (default is false). Also accepted: [yes|no].
+  --load-images=[true|false] load all inlined images (default is true). Also accepted: [yes|no].
+  --local-storage-path=/some/path path to save LocalStorage content and WebSQL content.
+  --local-storage-quota=number maximum size to allow for data.
+  --local-to-remote-url-access=[true|false] allows local content to access remote URL (default is false). Also accepted: [yes|no].
+  --max-disk-cache-size=size limits the size of disk cache (in KB).
+  --output-encoding=encoding sets the encoding used for terminal output (default is utf8).
+  --remote-debugger-port starts the script in a debug harness and listens on the specified port
+  --remote-debugger-autorun runs the script in the debugger immediately: 'yes' or 'no' (default)
+  --proxy=address:port specifies the proxy server to use (e.g. --proxy=192.168.1.42:8080).
+  --proxy-type=[http|socks5|none] specifies the type of the proxy server (default is http).
+  --proxy-auth specifies the authentication information for the proxy, e.g. --proxy-auth=username:password).
+  --script-encoding=encoding sets the encoding used for the starting script (default is utf8).
+  --ssl-protocol=[sslv3|sslv2|tlsv1|any'] sets the SSL protocol for secure connections (default is SSLv3).
+  --ssl-certificates-path=<val> Sets the location for custom CA certificates (if none set, uses system default).
+  --web-security=[true|false] enables web security and forbids cross-domain XHR (default is true). Also accepted: [yes|no].
+  --webdriver starts in 'Remote WebDriver mode' (embedded GhostDriver): '[[:]]' (default '127.0.0.1:8910')
+  --webdriver-selenium-grid-hub URL to the Selenium Grid HUB: 'URLTOHUB' (default 'none') (NOTE: works only together with '--webdriver')
               
 ```
 
