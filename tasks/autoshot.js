@@ -28,6 +28,10 @@ module.exports = function (grunt) {
             parameters: options.phantomParams || {}
         };
 
+        var renderOptions = options.renderOptions || {
+                quality: 100
+            };
+
         console.log('phantomOptions = ', phantomOptions);
 
         // Core screenshot function using phamtonJS
@@ -41,7 +45,7 @@ module.exports = function (grunt) {
 
             phantom.create(function (err, ph) {
                 if (err) {
-                    grunt.fail.warn(err.message);
+                    grunt.fail.warn((err && err.message) || err);
                     return;
                 }
                 return ph.createPage(function (err, page) {
@@ -75,7 +79,7 @@ module.exports = function (grunt) {
                                     grunt.log.writeln('Delay ' + delay + ' to take a screenshot to ' + target);
                                     ph.exit();
                                     cb();
-                                });
+                                }, renderOptions);
                             }, delay);
                         } else {
                             page.render(path + '/' + target, function () {
