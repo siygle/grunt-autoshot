@@ -33,6 +33,11 @@ module.exports = function(grunt) {
       default_options: {
         options: {
           path: './test/screenshot',
+          phantomParams : {
+            'local-to-remote-url-access': true,
+            'web-security': false
+          },
+
           remote: {
             files: [
               { src: "http://getbootstrap.com", dest: "bootstrap.png" },
@@ -44,7 +49,8 @@ module.exports = function(grunt) {
             port: 7788,
             files: [
               { src: "index.html", dest: "screenshot.jpg" },
-              { src: "ajax.html", dest: "ajax.jpg", delay: "5000" }
+              { src: "ajax.html", dest: "ajax.jpg", delay: "5000" },
+              { src: "helloworld-from-ajax.html", dest: "helloworld.jpg", delay: "1000" }
             ]
           },
           viewport: [
