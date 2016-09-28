@@ -24,7 +24,7 @@ module.exports = function (grunt) {
         });
 
         var phantomOptions = {
-            phantomPath: require('phantomjs2').path,
+            phantomPath: require('phantomjs-prebuilt').path,
             parameters: options.phantomParams || {}
         };
 

@@ -1,6 +1,6 @@
 {
   "name": "grunt-autoshot",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Create a quick screenshot for your site which could help for document or testing.",
   "homepage": "https://github.com/Ferrari/grunt-autoshot",
   "bugs": "https://github.com/Ferrari/grunt-autoshot/issues",
@@ -33,9 +33,9 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "st": "~0.2.3",
     "async": "~0.2.10",
     "node-phantom-simple": "~1.2.0",
-    "phantomjs2": "~2.0"
+    "phantomjs-prebuilt": "^2.1.12",
+    "st": "~0.2.3"
   }
 }
